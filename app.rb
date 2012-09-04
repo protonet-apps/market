@@ -46,6 +46,21 @@ get '/' do
   haml :index, :format => :html5
 end
 
+get '/:rid/:app' do |rid, app|
+  pass unless @repo = DB[:repos].first(:id => rid)
+  @repo_info = JSON.parse @repo[:json]
+  pass unless @app = @repo_info['apps'].find {|e| e['name'] == app }
+  
+  @installs = []
+  DB[:apps].where(:repo_id => rid).each do |app|
+    manifest = JSON.parse app[:json]
+    next unless @app['name'] == manifest['name']
+    @installs << manifest
+  end
+  
+  haml :show, :format => :html5
+end
+
 get '/one' do |repo_id|
   @repos = DB[:repos].map {|r| r.merge(:data => JSON.parse(r[:json])) }
   @repo = @repos.find {|r| r[:id] == repo_id }

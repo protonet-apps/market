@@ -1,0 +1,82 @@
+!!!
+%html
+  %head
+    %title Protonet App Market
+    
+    :css
+      body { margin: 0; padding: 15px; }
+      
+      .repos {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 15px 0;
+        background: #ccc;
+      }
+      .repos li {
+        display: inline-block;
+      }
+      .repos a {
+        display: block;
+        padding: 15px;
+        border-right: 1px solid #fff;
+        font-size: 125%;
+        color: black;
+        text-decoration: none;
+      }
+      .repos a:hover {
+        background: #eee;
+      }
+      .repos a.active {
+        font-weight: bold;
+        background: #bbb;
+      }
+      
+      img.app {
+        float: left;
+        margin-right: 10px;
+      }
+      h1, h3, h4 {
+        display: inline-block;
+      }
+      h4 { padding-left: 10px; font-weight: normal; }
+      h1, h3, h4, p {
+        margin: 0;
+      }
+      
+      .app:hover {
+        background: #eee;
+      }
+      
+      #home a {
+        background: url(/store.png) no-repeat left;
+        padding-left: 63px;
+      }
+      
+      .wrapper { margin: 15px; }
+      
+      .installed .details {
+        background-image: url(/check.png);
+      }
+      
+      .status { text-align: right; }
+      
+      .back {
+        display: block;
+        background: url(/back.png) no-repeat left;
+        padding: 24px 0 24px 50px;
+        opacity: 0.5;
+        text-decoration: none;
+      }
+      .back:hover { opacity: 1; }
+  %body
+    %a.back{:href => "/"} back to app list
+    
+    .wrapper
+      %img.app{:src => "http://protonet-apps.github.com#{@app['icon']}"}
+      %h1= h(@app['title'])
+      %h4
+        by
+        %a{:href => @app['author']['homepage']}= h(@app['author']['name'])
+      %p= h(@app['description'])
+      - if @installs.any?
+        %p.status Installed
