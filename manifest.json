@@ -6,6 +6,7 @@
   },
   "name": "store",
   "title": "App Market",
+  "icon": "/store.png",
   "description": "Find and install the latest apps for your node",
   "version": "0.0.1",
   "homepage": "http://protonet-apps.github.com/store",
@@ -16,7 +17,7 @@
   "database": "mysql",
   "views": {
     "lightbox": "/",
-    "icon": "/store.png"
+    "apps": "/"
   },
   "setup": "ruby migrate.rb"
 }
