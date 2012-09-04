@@ -1,0 +1,22 @@
+{
+  "author": {
+    "name": "Daniel Lamando",
+    "email": "me@danopia.net",
+    "homepage": "http://danopia.net/"
+  },
+  "name": "store",
+  "title": "App Market",
+  "description": "Find and install the latest apps for your node",
+  "version": "0.0.1",
+  "homepage": "http://protonet-apps.github.com/store",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/protonet-apps/store.git"
+  },
+  "database": "mysql",
+  "views": {
+    "lightbox": "/",
+    "icon": "/store.png"
+  },
+  "setup": "ruby migrate.rb"
+}

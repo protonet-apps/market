@@ -1,0 +1,111 @@
+!!!
+%html
+  %head
+    %title Protonet App Market
+    
+    :css
+      body { margin: 0; padding: 0; }
+      
+      .repos {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 15px 0;
+        background: #ccc;
+      }
+      .repos li {
+        display: inline-block;
+      }
+      .repos a {
+        display: block;
+        padding: 15px;
+        border-right: 1px solid #fff;
+        font-size: 125%;
+        color: black;
+        text-decoration: none;
+      }
+      .repos a:hover {
+        background: #eee;
+      }
+      .repos a.active {
+        font-weight: bold;
+        background: #bbb;
+      }
+      
+      .app {
+        width: 400px;
+        display: inline-block;
+        min-height: 48px;
+        margin: 5px;
+        padding: 10px;
+      }
+      .app img {
+        float: left;
+        margin-right: 10px;
+      }
+      h1, .app h3, h4 {
+        display: inline-block;
+      }
+      h4 { padding-left: 10px; font-weight: normal; }
+      h1, h3, h4, p {
+        margin: 0;
+      }
+      
+      .app:hover {
+        background: #eee;
+      }
+      
+      #home a {
+        background: url(/store.png) no-repeat left;
+        padding-left: 63px;
+      }
+      
+      .wrapper { margin: 15px; }
+      
+      .details {
+        text-indent: -9999px;
+        display: block;
+        width: 48px;
+        height: 48px;
+        float: right;
+        background: url(/next.png) no-repeat;
+        opacity: 0.1;
+      }
+      .app:hover .details {
+        opacity: 0.8;
+      }
+  %body
+    /
+      %p
+        Debug info: you are user
+        = env['HTTP_X_USER_ID'].to_i
+
+    %ul.repos
+      /
+        %li{:id => 'home'}>
+          %a{:href => "/"}
+            App Market
+      - @repos.each do |repo|
+        %li>
+          %a{:href => "/#{repo[:id]}", :class => (repo == @repo) && 'active'}= h(repo[:data]['title'])
+      %li>
+        %a{:href => "/new"} Other...
+    
+    .wrapper
+      .wrapper
+        %h1= h(@repo[:data]['title'])
+        %h4
+          by
+          %a{:href => @repo[:data]['author']['homepage']}= h(@repo[:data]['author']['name'])
+        %p
+          = h(@repo[:data]['description'])
+          %a{:href => @repo[:data]['homepage'], :style => 'margin-left: 10px;'} more info...
+    
+      - @apps.each do |app|
+        .app
+          %a{:href => "/#{@repo[:id]}/#{app['name']}", :class => 'details'} details
+          %img{:src => "http://protonet-apps.github.com#{app['icon']}"}
+          %h3= h(app['title'])
+          %h4
+            by
+            %a{:href => app['author']['homepage']}= h(app['author']['name'])
+          %p= h(app['description'])
