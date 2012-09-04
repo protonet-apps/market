@@ -33,8 +33,9 @@
       
       .app {
         width: 400px;
-        display: inline-block;
-        min-height: 48px;
+        display: block;
+        float: left;
+        min-height: 55px;
         margin: 5px;
         padding: 10px;
       }
@@ -69,10 +70,16 @@
         float: right;
         background: url(/next.png) no-repeat;
         opacity: 0.1;
+        margin-left: 10px;
       }
       .app:hover .details {
         opacity: 0.8;
       }
+      .installed .details {
+        background-image: url(/check.png);
+      }
+      
+      .status { text-align: right; }
   %body
     /
       %p
@@ -101,7 +108,7 @@
           %a{:href => @repo[:data]['homepage'], :style => 'margin-left: 10px;'} more info...
     
       - @apps.each do |app|
-        .app
+        .app{:class => (app['installed'] && 'installed')}
           %a{:href => "/#{@repo[:id]}/#{app['name']}", :class => 'details'} details
           %img{:src => "http://protonet-apps.github.com#{app['icon']}"}
           %h3= h(app['title'])
@@ -109,3 +116,5 @@
             by
             %a{:href => app['author']['homepage']}= h(app['author']['name'])
           %p= h(app['description'])
+          - if app['installed']
+            %p.status Installed

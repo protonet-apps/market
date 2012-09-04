@@ -49,7 +49,7 @@ get '/:repo_id?' do |repo_id|
   
   DB[:apps].where(:repo_id => repo_id).each do |app|
     manifest = JSON.parse app[:json]
-    next unless entry = @repo.find {|e| e['name'] == manifest['name'] }
+    next unless entry = @apps.find {|e| e['name'] == manifest['name'] }
     entry['installed'] = manifest
   end
   
