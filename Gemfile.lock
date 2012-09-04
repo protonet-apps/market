@@ -1,6 +1,14 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    amq-client (0.9.4)
+      amq-protocol (>= 0.9.4)
+      eventmachine
+    amq-protocol (0.9.4)
+    amqp (0.9.7)
+      amq-client (~> 0.9.4)
+      amq-protocol (>= 0.9.4)
+      eventmachine
     daemons (1.1.9)
     eventmachine (0.12.10)
     haml (3.1.7)
@@ -24,6 +32,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  amqp
   haml
   mysql2
   sequel

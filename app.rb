@@ -3,6 +3,7 @@ require 'haml'
 require 'sequel'
 require 'logger'
 require 'json'
+require 'amqp'
 
 if ENV.key? 'DATABASE_URL'
   DB = Sequel.connect ENV['DATABASE_URL']
@@ -15,6 +16,12 @@ else
 end
 DB.loggers << Logger.new(STDOUT) if ENV['RACK_ENV'] != 'production'
 
+EM.next_tick do
+  MQ.queue("create").subscribe do |payload|
+    puts "Received a message: #{payload}"
+  end
+end
+
 helpers do
   include Rack::Utils
   alias_method :h, :escape_html
@@ -22,7 +29,7 @@ end
 
 set :protection, :except => :frame_options
 
-get '/all' do
+get '/' do
   @repos = {}
   DB[:repos].each do |repo|
     @repos[repo[:id]] = JSON.parse repo[:json]
@@ -31,17 +38,15 @@ get '/all' do
   DB[:apps].each do |app|
     manifest = JSON.parse app[:json]
     next unless repo = @repos[app[:repo_id]]
-    next unless entry = repo.find {|e| e['name'] == manifest['name'] }
+    next unless entry = repo['apps'].find {|e| e['name'] == manifest['name'] }
     entry['installed'] = manifest
   end
   
-  @apps = @repos.values.map {|r| r['apps'].map {|a| a.merge('repo' => r) } }.flatten
-  haml :all, :format => :html5
+  #@apps = @repos.values.map {|r| r['apps'].map {|a| a.merge('repo' => r) } }.flatten
+  haml :index, :format => :html5
 end
 
-get '/:repo_id?' do |repo_id|
-  repo_id = repo_id ? repo_id.to_i : 1
-  
+get '/one' do |repo_id|
   @repos = DB[:repos].map {|r| r.merge(:data => JSON.parse(r[:json])) }
   @repo = @repos.find {|r| r[:id] == repo_id }
 

@@ -4,7 +4,7 @@
     %title Protonet App Market
     
     :css
-      body { margin: 0; padding: 0; }
+      body { margin: 0; padding: 15px; }
       
       .repos {
         list-style: none;
@@ -86,7 +86,7 @@
         Debug info: you are user
         = env['HTTP_X_USER_ID'].to_i
 
-    /
+    -#
       %ul.repos
         %li{:id => 'home'}>
           %a{:href => "/"}
@@ -97,19 +97,19 @@
         %li>
           %a{:href => "/new"} Other...
     
-    .wrapper
+    - @repos.each_pair do |(rid, repo)|
       .wrapper
-        %h1= h(@repo[:data]['title'])
+        %h1= h(repo['title'])
         %h4
           by
-          %a{:href => @repo[:data]['author']['homepage']}= h(@repo[:data]['author']['name'])
+          %a{:href => repo['author']['homepage']}= h(repo['author']['name'])
         %p
-          = h(@repo[:data]['description'])
-          %a{:href => @repo[:data]['homepage'], :style => 'margin-left: 10px;'} more info...
+          = h(repo['description'])
+          %a{:href => repo['homepage'], :style => 'margin-left: 10px;'} more info...
     
-      - @apps.each do |app|
+      - repo['apps'].each do |app|
         .app{:class => (app['installed'] && 'installed')}
-          %a{:href => "/#{@repo[:id]}/#{app['name']}", :class => 'details'} details
+          %a{:href => "/#{rid}/#{app['name']}", :class => 'details'} details
           %img{:src => "http://protonet-apps.github.com#{app['icon']}"}
           %h3= h(app['title'])
           %h4

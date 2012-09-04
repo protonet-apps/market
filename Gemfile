@@ -8,6 +8,9 @@ gem 'haml'
 # HTTP server
 gem 'thin'
 
+# app-manager interface
+gem 'amqp'
+
 # Database
 gem 'sequel'
 gem 'mysql2', :group => :production
