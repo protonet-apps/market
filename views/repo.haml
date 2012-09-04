@@ -86,16 +86,16 @@
         Debug info: you are user
         = env['HTTP_X_USER_ID'].to_i
 
-    %ul.repos
-      /
+    /
+      %ul.repos
         %li{:id => 'home'}>
           %a{:href => "/"}
             App Market
-      - @repos.each do |repo|
+        - @repos.each do |repo|
+          %li>
+            %a{:href => "/#{repo[:id]}", :class => (repo == @repo) && 'active'}= h(repo[:data]['title'])
         %li>
-          %a{:href => "/#{repo[:id]}", :class => (repo == @repo) && 'active'}= h(repo[:data]['title'])
-      %li>
-        %a{:href => "/new"} Other...
+          %a{:href => "/new"} Other...
     
     .wrapper
       .wrapper
