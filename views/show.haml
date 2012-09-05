@@ -52,13 +52,7 @@
         padding-left: 63px;
       }
       
-      .wrapper { margin: 15px; }
-      
-      .installed .details {
-        background-image: url(/check.png);
-      }
-      
-      .status { text-align: right; }
+      .wrapper { margin: 15px 15px 15px 65px; }
       
       .back {
         display: block;
@@ -71,8 +65,8 @@
   %body
     %a.back{:href => "/"} back to app list
     
+    %img.app{:src => "http://protonet-apps.github.com#{@app['icon']}"}
     .wrapper
-      %img.app{:src => "http://protonet-apps.github.com#{@app['icon']}"}
       %h1= h(@app['title'])
       %h4
         by
