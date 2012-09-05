@@ -3,7 +3,7 @@ require 'haml'
 require 'sequel'
 require 'logger'
 require 'json'
-require 'amqp'
+require './rpc'
 
 if ENV.key? 'DATABASE_URL'
   DB = Sequel.connect ENV['DATABASE_URL']
@@ -15,12 +15,6 @@ else
   raise 'Running production mode without a database'
 end
 DB.loggers << Logger.new(STDOUT) if ENV['RACK_ENV'] != 'production'
-
-EM.next_tick do
-  MQ.queue("create").subscribe do |payload|
-    puts "Received a message: #{payload}"
-  end
-end
 
 helpers do
   include Rack::Utils
@@ -36,6 +30,11 @@ helpers do
 end
 
 set :protection, :except => :frame_options
+
+post '*' do
+  pass unless params[:__method]
+  call env.merge('REQUEST_METHOD' => params[:__method])
+end
 
 get '/' do
   @repos = {}
@@ -75,6 +74,27 @@ get '/:rid/:app' do |rid, app|
   end
   
   haml :show, :format => :html5
+end
+
+post '/:rid/:app' do |rid, app|
+  pass unless @repo = DB[:repos].first(:id => rid)
+  @repo_info = JSON.parse @repo[:json]
+  pass unless @app = @repo_info['apps'].find {|e| e['name'] == app }
+  @app['repo_id'] = @repo[:id]
+  @app['repo'] = @repo_info
+  
+  stream(:keep_open) do |out|
+    out << 
+  '<!DOCTYPE html><html><head><link href="http://fonts.googleapis.com/css?family=Eagle+Lake" rel="stylesheet" type="text/css"><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script></head><body><div style="font-family: \'Eagle Lake\';width:500px;font-size:2em;margin: 10% auto 5% auto;"><img src="/loading.png" style="-moz-transform-origin:25.5px 25.5px;"><script>var i=0;setInterval(function(){i=(i+30)%360;$("img").css({"-moz-transform":"rotate("+i+"deg)"});},50);</script><h1 style="display:inline;margin-left:25px;">Installing...</h1></div><pre>Status:<br/>'
+    Rpc.fire 'install', :uri => @app['repository']['url'] do |err, result|
+      out << result << '<br/>'
+      
+      next if err == 'partial'
+      sleep 5
+      out << '</pre><script>document.location="http://wiki.protonet.danopia.net:7200/";</script></body></html>'
+      out.close
+    end
+  end
 end
 
 get '/one' do |repo_id|
