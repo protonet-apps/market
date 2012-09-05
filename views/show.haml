@@ -11,13 +11,11 @@
         margin-right: 20px;
       }
       h1 { font-size: 4em; }
+      h2 { font-size: 2em; font-weight: normal; }
+      p { font-size: 1.25em; padding: 0.5em 0; }
+      button { font-size: 1em; }
       h1, h2, h3, h4, p {
         margin: 0;
-      }
-      
-      #home a {
-        background: url(/store.png) no-repeat left;
-        padding-left: 63px;
       }
       
       .wrapper { margin: 15px 15px 15px 65px; }
@@ -39,6 +37,14 @@
       %h2
         by
         %a{:href => @app['author']['homepage']}= h(@app['author']['name'])
-      %p= h(@app['description'])
+        
       - if @installs.any?
         %p.status Installed
+      - else
+        %form{:action => "/#{@repo[:id]}/#{@app['name']}", :method => 'POST'}
+          / %input{:type => 'hidden', :name => '__method', :value => 'INSTALL'}
+          %p
+            %button Install
+            %a{:href => @app['homepage']} More info
+            
+      %p= h(@app['description'])
