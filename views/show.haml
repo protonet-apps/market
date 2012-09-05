@@ -6,45 +6,13 @@
     :css
       body { margin: 0; padding: 15px; }
       
-      .repos {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 15px 0;
-        background: #ccc;
-      }
-      .repos li {
-        display: inline-block;
-      }
-      .repos a {
-        display: block;
-        padding: 15px;
-        border-right: 1px solid #fff;
-        font-size: 125%;
-        color: black;
-        text-decoration: none;
-      }
-      .repos a:hover {
-        background: #eee;
-      }
-      .repos a.active {
-        font-weight: bold;
-        background: #bbb;
-      }
-      
       img.app {
         float: left;
-        margin-right: 10px;
+        margin-right: 20px;
       }
-      h1, h3, h4 {
-        display: inline-block;
-      }
-      h4 { padding-left: 10px; font-weight: normal; }
-      h1, h3, h4, p {
+      h1 { font-size: 4em; }
+      h1, h2, h3, h4, p {
         margin: 0;
-      }
-      
-      .app:hover {
-        background: #eee;
       }
       
       #home a {
@@ -65,10 +33,10 @@
   %body
     %a.back{:href => "/"} back to app list
     
-    %img.app{:src => "http://protonet-apps.github.com#{@app['icon']}"}
+    %img.app{:src => icon_url(app, 'large'), :width => 256, :height => 256}
     .wrapper
       %h1= h(@app['title'])
-      %h4
+      %h2
         by
         %a{:href => @app['author']['homepage']}= h(@app['author']['name'])
       %p= h(@app['description'])

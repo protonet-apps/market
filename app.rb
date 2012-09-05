@@ -25,6 +25,14 @@ end
 helpers do
   include Rack::Utils
   alias_method :h, :escape_html
+  
+  def icon_url item, size='thumb'
+    root = item['iconroot'] || (item['repo'] && item['repo']['iconroot'])
+    root ||= item['homepage'] || (item['repo'] && item['repo']['homepage'])
+    
+    icon = (item['icons'] && item['icons'][size]) || item['icon']
+    icon ? (root + icon) : '/noicon.png'
+  end
 end
 
 set :protection, :except => :frame_options
@@ -32,7 +40,13 @@ set :protection, :except => :frame_options
 get '/' do
   @repos = {}
   DB[:repos].each do |repo|
-    @repos[repo[:id]] = JSON.parse repo[:json]
+    data = JSON.parse repo[:json]
+    data['apps'].each do |a|
+      a['repo_id'] = repo[:id]
+      a['repo'] = data
+    end
+    
+    @repos[repo[:id]] = data
   end
   
   DB[:apps].each do |app|
@@ -50,6 +64,8 @@ get '/:rid/:app' do |rid, app|
   pass unless @repo = DB[:repos].first(:id => rid)
   @repo_info = JSON.parse @repo[:json]
   pass unless @app = @repo_info['apps'].find {|e| e['name'] == app }
+  @app['repo_id'] = @repo[:id]
+  @app['repo'] = @repo_info
   
   @installs = []
   DB[:apps].where(:repo_id => rid).each do |app|

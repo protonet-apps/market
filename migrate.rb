@@ -42,7 +42,7 @@ unless DB.table_exists? :repos
     DB[:repos] << {:user_id => 0, :json => data, :created_at => Time.now}
     
     data = open('./manifest.json').read
-    DB[:apps] << {:repo_id => 1, :user_id => 0, :json => data, :name => 'store', :created_at => Time.now}
+    DB[:apps] << {:repo_id => 1, :user_id => 0, :json => data, :name => 'market', :created_at => Time.now}
   end
 end
 

@@ -6,6 +6,10 @@
     :css
       body { margin: 0; padding: 15px; }
       
+      a {
+        text-decoration: none;
+      }
+      
       .repos {
         list-style: none;
         padding: 0;
@@ -21,7 +25,6 @@
         border-right: 1px solid #fff;
         font-size: 125%;
         color: black;
-        text-decoration: none;
       }
       .repos a:hover {
         background: #eee;
@@ -30,6 +33,12 @@
         font-weight: bold;
         background: #bbb;
       }
+      
+      .wrapper img {
+        float: left;
+        margin-right: 10px;
+      }
+      .wrapper { border-bottom: 1px solid black; min-height: 64px; }
       
       .app {
         width: 400px;
@@ -60,7 +69,7 @@
         padding-left: 63px;
       }
       
-      .wrapper { margin: 15px; }
+      .wrapper { padding: 15px; }
       
       .details {
         text-indent: -9999px;
@@ -99,19 +108,22 @@
     
     - @repos.each_pair do |(rid, repo)|
       .wrapper
+        %img{:src => icon_url(repo, 'normal')}
         %h1= h(repo['title'])
         %h4
           by
           %a{:href => repo['author']['homepage']}= h(repo['author']['name'])
         %p
           = h(repo['description'])
-          %a{:href => repo['homepage'], :style => 'margin-left: 10px;'} more info...
+        %p
+          %a{:href => repo['homepage']} more info...
     
       - repo['apps'].each do |app|
         .app{:class => (app['installed'] && 'installed')}
           %a{:href => "/#{rid}/#{app['name']}", :class => 'details'} details
-          %img{:src => "http://protonet-apps.github.com#{app['icon']}"}
-          %h3= h(app['title'])
+          %img{:src => icon_url(app)}
+          %h3
+            %a{:href => "/#{rid}/#{app['name']}"}= h(app['title'])
           %h4
             by
             %a{:href => app['author']['homepage']}= h(app['author']['name'])

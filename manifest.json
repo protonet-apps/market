@@ -4,9 +4,9 @@
     "email": "me@danopia.net",
     "homepage": "http://danopia.net/"
   },
-  "name": "store",
+  "name": "market",
   "title": "App Market",
-  "icon": "/store.png",
+  "icon": "/market.png",
   "description": "Find and install the latest apps for your node",
   "version": "0.0.1",
   "homepage": "http://protonet-apps.github.com/store",
