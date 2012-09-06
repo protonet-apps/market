@@ -41,8 +41,8 @@ unless DB.table_exists? :repos
     data = open('http://protonet-apps.github.com/apps.json').read
     DB[:repos] << {:user_id => 0, :json => data, :created_at => Time.now}
     
-    data = open('./manifest.json').read
-    DB[:apps] << {:repo_id => 1, :user_id => 0, :json => data, :name => 'market', :created_at => Time.now}
+#    data = open('./manifest.json').read
+#    DB[:apps] << {:repo_id => 1, :user_id => 0, :json => data, :name => 'market', :created_at => Time.now}
   end
 end
 
