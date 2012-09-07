@@ -31,6 +31,8 @@ end
 
 set :protection, :except => :frame_options
 
+before { request.script_name = request['X-SCRIPT-NAME'] }
+
 post '*' do
   pass unless params[:__method]
   call env.merge('REQUEST_METHOD' => params[:__method])
