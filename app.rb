@@ -25,7 +25,7 @@ helpers do
     root ||= item['homepage'] || (item['repo'] && item['repo']['homepage'])
     
     icon = (item['icons'] && item['icons'][size]) || item['icon']
-    icon ? (root + icon) : '/noicon.png'
+    url(icon ? (root + icon) : '/noicon.png')
   end
 end
 

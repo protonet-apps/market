@@ -64,11 +64,6 @@
         background: #eee;
       }
       
-      #home a {
-        background: url(/store.png) no-repeat left;
-        padding-left: 63px;
-      }
-      
       .wrapper { padding: 15px; }
       
       .details {
@@ -77,7 +72,7 @@
         width: 48px;
         height: 48px;
         float: right;
-        background: url(/next.png) no-repeat;
+        background: url(next.png) no-repeat;
         opacity: 0.1;
         margin-left: 10px;
       }
@@ -85,7 +80,7 @@
         opacity: 0.8;
       }
       .installed .details {
-        background-image: url(/check.png);
+        background-image: url(check.png);
       }
       
       .status { text-align: right; }
@@ -98,13 +93,13 @@
     -#
       %ul.repos
         %li{:id => 'home'}>
-          %a{:href => "/"}
+          %a{:href => url("/")}
             App Market
         - @repos.each do |repo|
           %li>
-            %a{:href => "/#{repo[:id]}", :class => (repo == @repo) && 'active'}= h(repo[:data]['title'])
+            %a{:href => url("/#{repo[:id]}"), :class => (repo == @repo) && 'active'}= h(repo[:data]['title'])
         %li>
-          %a{:href => "/new"} Other...
+          %a{:href => url("/new")} Other...
     
     - @repos.each_pair do |(rid, repo)|
       .wrapper
@@ -120,10 +115,10 @@
     
       - repo['apps'].each do |app|
         .app{:class => (app['installed'] && 'installed')}
-          %a{:href => "/#{rid}/#{app['name']}", :class => 'details'} details
+          %a{:href => url("/#{rid}/#{app['name']}"), :class => 'details'} details
           %img{:src => icon_url(app)}
           %h3
-            %a{:href => "/#{rid}/#{app['name']}"}= h(app['title'])
+            %a{:href => url("/#{rid}/#{app['name']}")}= h(app['title'])
           %h4
             by
             %a{:href => app['author']['homepage']}= h(app['author']['name'])

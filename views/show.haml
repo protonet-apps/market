@@ -22,14 +22,14 @@
       
       .back {
         display: block;
-        background: url(/back.png) no-repeat left;
+        background: url(../back.png) no-repeat left;
         padding: 24px 0 24px 50px;
         opacity: 0.5;
         text-decoration: none;
       }
       .back:hover { opacity: 1; }
   %body
-    %a.back{:href => "/"} back to app list
+    %a.back{:href => url("/")} back to app list
     
     %img.app{:src => icon_url(app, 'large'), :width => 256, :height => 256}
     .wrapper
@@ -41,7 +41,7 @@
       - if @installs.any?
         %p.status Installed
       - else
-        %form{:action => "/#{@repo[:id]}/#{@app['name']}", :method => 'POST'}
+        %form{:action => url("/#{@repo[:id]}/#{@app['name']}"), :method => 'POST'}
           / %input{:type => 'hidden', :name => '__method', :value => 'INSTALL'}
           %p
             %button Install
