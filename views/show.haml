@@ -38,7 +38,8 @@
         text-shadow: 0 0 5px #fff, 0 0 5px #fff;
       }
   %body
-    %p.flash= @message
+    - if @message do
+      %p.flash= @message
     
     %a.back{:href => url("/")} back to app list
     

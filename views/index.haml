@@ -94,7 +94,8 @@
         text-shadow: 0 0 5px #fff, 0 0 5px #fff;
       }
   %body
-    %p.flash= @message
+    - if @message do
+      %p.flash= @message
     
     - @repos.each_pair do |(rid, repo)|
       .wrapper
