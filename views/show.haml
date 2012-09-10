@@ -28,7 +28,18 @@
         text-decoration: none;
       }
       .back:hover { opacity: 1; }
+      
+      .flash {
+        display: block;
+        background: #f88;
+        border: 1px solid #f00;
+        padding: 1em;
+        font-size: 150%;
+        text-shadow: 0 0 5px #fff, 0 0 5px #fff;
+      }
   %body
+    %p.flash= @message
+    
     %a.back{:href => url("/")} back to app list
     
     %img.app{:src => icon_url(app, 'large'), :width => 256, :height => 256}

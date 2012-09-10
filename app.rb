@@ -3,8 +3,10 @@ require 'haml'
 require 'sequel'
 require 'logger'
 require 'json'
+
 require './rpc'
 
+# Database cookiecutter block
 if ENV.key? 'DATABASE_URL'
   DB = Sequel.connect ENV['DATABASE_URL']
   raise 'Not migrated' unless DB.table_exists?(:repos)
@@ -31,7 +33,16 @@ end
 
 set :protection, :except => :frame_options
 
-before { request.script_name = request['X-SCRIPT-NAME'] }
+before do
+  @user    = JSON.parse(request.env['HTTP_X_USER'   ]) rescue nil
+  @context = JSON.parse(request.env['HTTP_X_CONTEXT']) rescue nil
+  
+  if !@user
+    @message = 'You are not logged in to Protonet. You must log in before managing apps.'
+  elsif !@user.admin
+    @message = 'You are not an administrator on this Protonet node. Only administrators can manage apps.'
+  end
+end
 
 post '*' do
   pass unless params[:__method]
@@ -79,6 +90,8 @@ get '/:rid/:app' do |rid, app|
 end
 
 post '/:rid/:app' do |rid, app|
+  pass unless @user && @user.admin # TODO: error
+  
   pass unless @repo = DB[:repos].first(:id => rid)
   @repo_info = JSON.parse @repo[:json]
   pass unless @app = @repo_info['apps'].find {|e| e['name'] == app }

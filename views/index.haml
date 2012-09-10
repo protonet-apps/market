@@ -84,22 +84,17 @@
       }
       
       .status { text-align: right; }
+      
+      .flash {
+        display: block;
+        background: #f88;
+        border: 1px solid #f00;
+        padding: 1em;
+        font-size: 150%;
+        text-shadow: 0 0 5px #fff, 0 0 5px #fff;
+      }
   %body
-    /
-      %p
-        Debug info: you are user
-        = env['HTTP_X_USER_ID'].to_i
-
-    -#
-      %ul.repos
-        %li{:id => 'home'}>
-          %a{:href => url("/")}
-            App Market
-        - @repos.each do |repo|
-          %li>
-            %a{:href => url("/#{repo[:id]}"), :class => (repo == @repo) && 'active'}= h(repo[:data]['title'])
-        %li>
-          %a{:href => url("/new")} Other...
+    %p.flash= @message
     
     - @repos.each_pair do |(rid, repo)|
       .wrapper
