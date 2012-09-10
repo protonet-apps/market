@@ -39,7 +39,7 @@ before do
   
   if !@user
     @message = 'You are not logged in to Protonet. You must log in before managing apps.'
-  elsif !@user.admin
+  elsif !@user['admin']
     @message = 'You are not an administrator on this Protonet node. Only administrators can manage apps.'
   end
 end
@@ -90,7 +90,7 @@ get '/:rid/:app' do |rid, app|
 end
 
 post '/:rid/:app' do |rid, app|
-  pass unless @user && @user.admin # TODO: error
+  pass unless @user && @user['admin'] # TODO: error
   
   pass unless @repo = DB[:repos].first(:id => rid)
   @repo_info = JSON.parse @repo[:json]
