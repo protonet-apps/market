@@ -85,18 +85,12 @@ post '/:rid/:app' do |rid, app|
   @app['repo_id'] = @repo[:id]
   @app['repo'] = @repo_info
   
-  stream(:keep_open) do |out|
-    out << 
-  '<!DOCTYPE html><html><head><link href="http://fonts.googleapis.com/css?family=Eagle+Lake" rel="stylesheet" type="text/css"><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script></head><body><div style="font-family: \'Eagle Lake\';width:500px;font-size:2em;margin: 10% auto 5% auto;"><img src="/loading.png" style="-moz-transform-origin:25.5px 25.5px;"><script>var i=0;setInterval(function(){i=(i+30)%360;$("img").css({"-moz-transform":"rotate("+i+"deg)"});},50);</script><h1 style="display:inline;margin-left:25px;">Installing...</h1></div><pre>Status:<br/>'
-    Rpc.fire 'install', :uri => @app['repository']['url'] do |err, result|
-      out << result << '<br/>'
-      
-      next if err == 'partial'
-      sleep 5
-      out << '</pre><script>document.location="http://wiki.protonet.danopia.net:7200/";</script></body></html>'
-      out.close
-    end
+  Rpc.fire 'install', :uri => @app['repository']['url'] do |err, result|
+    next if err == 'partial'
+    puts 'app installed'
   end
+  
+  redirect url('/')
 end
 
 get '/one' do |repo_id|
