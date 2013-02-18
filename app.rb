@@ -38,7 +38,7 @@ before do
   @context = JSON.parse(request.env['HTTP_X_CONTEXT']) rescue nil
   
   if !@user
-    @message = 'You are not logged in to Protonet. You must log in before managing apps.'
+    @message = 'You are not logged in to Protonet. You must log in as an administrator before managing apps.'
   elsif !@user['admin']
     @message = 'You are not an administrator on this Protonet node. Only administrators can manage apps.'
   end

@@ -73,7 +73,7 @@
         height: 48px;
         float: right;
         background: url(next.png) no-repeat;
-        opacity: 0.1;
+        opacity: 0.25;
         margin-left: 10px;
       }
       .app:hover .details {
@@ -87,21 +87,22 @@
       
       .flash {
         display: block;
-        background: #f88;
-        border: 1px solid #f00;
+        background: #f44;
+        border: 1px solid #c00;
         padding: 1em;
         font-size: 150%;
-        text-shadow: 0 0 5px #fff, 0 0 5px #fff;
+        color: #fff;
+        text-shadow: 0 0 3px #000;
       }
   %body
-    - if @message do
+    - if @message
       %p.flash= @message
     
     - @repos.each_pair do |(rid, repo)|
       .wrapper
         %img{:src => icon_url(repo, 'normal')}
         %h1= h(repo['title'])
-        %h4
+        %h4>
           by
           %a{:href => repo['author']['homepage']}= h(repo['author']['name'])
         %p
@@ -115,9 +116,10 @@
           %img{:src => icon_url(app)}
           %h3
             %a{:href => url("/#{rid}/#{app['name']}")}= h(app['title'])
-          %h4
+          %h4>
             by
             %a{:href => app['author']['homepage']}= h(app['author']['name'])
           %p= h(app['description'])
           - if app['installed']
             %p.status Installed
+

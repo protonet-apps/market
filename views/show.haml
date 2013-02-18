@@ -31,14 +31,15 @@
       
       .flash {
         display: block;
-        background: #f88;
-        border: 1px solid #f00;
+        background: #f44;
+        border: 1px solid #c00;
         padding: 1em;
         font-size: 150%;
-        text-shadow: 0 0 5px #fff, 0 0 5px #fff;
+        color: #fff;
+        text-shadow: 0 0 3px #000;
       }
   %body
-    - if @message do
+    - if @message
       %p.flash= @message
     
     %a.back{:href => url("/")} back to app list
